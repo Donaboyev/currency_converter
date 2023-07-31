@@ -1,0 +1,10 @@
+{
+  "enterValue": "Enter the value",
+  "@enterValue": {
+    "description": "Entering"
+  },
+  "currencyConverter": "Currency converter",
+  "@currencyConverter": {
+    "description": "Converter"
+  }
+}
