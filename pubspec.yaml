@@ -19,6 +19,8 @@ dependencies:
   provider: ^6.0.5
   flutter_remix: ^0.0.3
   url_launcher: ^6.1.12
+  flutter_native_splash: ^2.3.1
+  shared_preferences: ^2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -30,3 +32,7 @@ flutter:
   generate: true
   assets:
     - assets/images/
+
+flutter_native_splash:
+  fullscreen: true
+  background_image: 'assets/images/currency.png'

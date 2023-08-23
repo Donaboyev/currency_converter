@@ -1,4 +1,11 @@
 {
-  "enterValue": "Qiymatni kiriting",
-  "currencyConverter": "Valyuta konvertori"
+  "currencyConverter": "Valyuta konvertori",
+  "rateOnPlayMarket": "Play Marketda baholang",
+  "sourceCode": "Dastur kodi",
+  "telegramChannel": "Telegram kanalimiz",
+  "facebook": "Facebook",
+  "twitter": "Twitter",
+  "instagram": "Instagram",
+  "feedback": "Fikr-mulohaza",
+  "about": "Dastur haqida"
 }

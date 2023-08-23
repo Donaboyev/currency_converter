@@ -8,8 +8,14 @@ import 'currency.dart';
 class CurrencyItem extends StatelessWidget {
   final Currency currency;
   final String locale;
+  final DateTime selectedDate;
 
-  const CurrencyItem({super.key, required this.currency, required this.locale});
+  const CurrencyItem({
+    super.key,
+    required this.currency,
+    required this.locale,
+    required this.selectedDate,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,23 +24,28 @@ class CurrencyItem extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => ConverterPage(currency: currency, locale: locale),
+            builder: (_) => ConverterPage(
+              currency: currency,
+              locale: locale,
+              selectedDate: selectedDate,
+            ),
           ),
         );
       },
       child: Container(
         padding: const EdgeInsets.all(16),
-        color: Colors.white.withOpacity(0.2),
-        margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        color: Colors.white.withOpacity(0.3),
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              AppHelpers.getCurrencyTitleByLocale(currency, locale),
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+            Expanded(
+              child: Text(
+                AppHelpers.getCurrencyTitleByLocale(currency, locale),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
             Row(
@@ -49,7 +60,7 @@ class CurrencyItem extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 Text(
                   '${(currency.diff?.startsWith('-') ?? false) ? currency.diff : '+${currency.diff}'}',
                   style: TextStyle(
@@ -60,7 +71,7 @@ class CurrencyItem extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 (currency.diff?.startsWith('-') ?? false)
                     ? const Icon(
                         Icons.south_east,

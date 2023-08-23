@@ -1,12 +1,16 @@
-import 'package:currency_converter/app_helpers.dart';
-import 'package:currency_converter/currency_item.dart';
-import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'app_helpers.dart';
+import 'app_provider.dart';
+import 'currency_item.dart';
 import 'package:get_it/get_it.dart';
+import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'currency.dart';
-import 'http_service.dart';
 import 'main_drawer.dart';
+import 'http_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,7 +24,6 @@ class _HomePageState extends State<HomePage> {
   List<Currency> _currencies = [];
   late RefreshController _controller;
   late DateTime _selectedDate;
-  String _locale = 'uz';
 
   @override
   void initState() {
@@ -58,12 +61,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final translate = AppLocalizations.of(context);
+    final provider = Provider.of<AppProvider>(context);
     return Scaffold(
-      drawer: MainDrawer(),
+      drawer: const MainDrawer(),
       appBar: AppBar(
-        title: const Text(
-          'Currency converter',
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          '${translate?.currencyConverter}',
+          style: const TextStyle(color: Colors.black),
         ),
         backgroundColor: const Color(0xFF01CEDB),
         iconTheme: const IconThemeData(color: Colors.black),
@@ -84,9 +89,7 @@ class _HomePageState extends State<HomePage> {
                 });
               }
             },
-            icon: const Icon(
-              Icons.calendar_month,
-            ),
+            icon: const Icon(Icons.calendar_month),
           ),
           PopupMenuButton(
             itemBuilder: (_) => [
@@ -104,9 +107,17 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
             onSelected: (value) {
-              setState(() {
-                _locale = value;
-              });
+              switch (value) {
+                case 'uz':
+                  provider.setLocale('uz', '');
+                  break;
+                case 'ru':
+                  provider.setLocale('ru', '');
+                  break;
+                default:
+                  provider.setLocale('en', '');
+                  break;
+              }
             },
           ),
         ],
@@ -132,7 +143,8 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (context, index) {
                     return CurrencyItem(
                       currency: _currencies[index],
-                      locale: _locale,
+                      locale: provider.locale?.languageCode ?? 'en',
+                      selectedDate: _selectedDate,
                     );
                   },
                 ),

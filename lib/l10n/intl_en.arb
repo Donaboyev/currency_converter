@@ -1,10 +1,38 @@
 {
-  "enterValue": "Enter the value",
-  "@enterValue": {
-    "description": "Entering"
-  },
   "currencyConverter": "Currency converter",
   "@currencyConverter": {
     "description": "Converter"
+  },
+  "rateOnPlayMarket": "Rate on Play Market",
+  "@rateOnPlayMarket": {
+    "description": "Rate"
+  },
+  "sourceCode": "Source code",
+  "@sourceCode": {
+    "description": "Code"
+  },
+  "telegramChannel": "Telegram channel",
+  "@telegramChannel": {
+    "description": "Code"
+  },
+  "facebook": "Facebook",
+  "@facebook": {
+    "description": "Code"
+  },
+  "twitter": "Twitter",
+  "@twitter": {
+    "description": "Code"
+  },
+  "instagram": "Instagram",
+  "@instagram": {
+    "description": "Code"
+  },
+  "feedback": "Feedback",
+  "@feedback": {
+    "description": "Code"
+  },
+  "about": "About",
+  "@about": {
+    "description": "Code"
   }
 }

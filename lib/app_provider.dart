@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 
+import 'local_source.dart';
+
 class AppProvider extends ChangeNotifier {
-  String _locale = 'uz';
+  Locale? get locale {
+    final String script = LocalSource.instance.getScriptCode();
+    final String code = LocalSource.instance.getLocaleCode();
+    if (script.isEmpty) {
+      return Locale.fromSubtags(languageCode: code);
+    } else {
+      return Locale.fromSubtags(languageCode: code, scriptCode: script);
+    }
+  }
 
-  Locale get locale => Locale(_locale);
+  void setLocale(String languageCode, String? scriptCode) {
+    LocalSource.instance.setLocaleCode(localeCode: languageCode);
+    LocalSource.instance.setLocaleScriptCode(scriptCode ?? '');
+    notifyListeners();
+  }
 
-  void setLocale(String locale) {
-    _locale = locale;
+  void clearLocale() {
+    LocalSource.instance.clear();
     notifyListeners();
   }
 }

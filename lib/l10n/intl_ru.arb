@@ -1,4 +1,11 @@
 {
-  "enterValue": "Введите значение",
-  "currencyConverter": "Конвертер валют"
+  "currencyConverter": "Конвертер валют",
+  "rateOnPlayMarket": "Оценить на Плей Маркете",
+  "sourceCode": "Исходный код",
+  "telegramChannel": "Телеграм канал",
+  "facebook": "Фейсбук",
+  "twitter": "Твиттер",
+  "instagram": "Инстаграм",
+  "feedback": "Обратная связь",
+  "about": "О программе"
 }
