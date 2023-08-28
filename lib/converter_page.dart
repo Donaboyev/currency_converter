@@ -29,11 +29,10 @@ class _ConverterPageState extends State<ConverterPage> {
   double _calculatedSum = 0;
   bool _isUzsMain = false;
   TextEditingController? _textEditingController;
-  List<Currency> _currencyHistories = [];
+  final List<Currency> _currencyHistories = [];
 
   Future<void> _getCurrencyHistories() async {
     final client = GetIt.I.get<HttpService>().client();
-
     for (int i = 1; i < 8; i++) {
       final response = await client.get(
         '/uz/arkhiv-kursov-valyut/json/all/${AppHelpers.getFormattedDate(widget.selectedDate.subtract(Duration(days: i)))}/',
@@ -91,8 +90,15 @@ class _ConverterPageState extends State<ConverterPage> {
                   if (value.isEmpty) {
                     _calculatedSum = 0;
                   } else {
-                    _calculatedSum = double.parse(value) *
-                        double.parse(widget.currency.rate ?? '');
+                    if (_isUzsMain) {
+                      _calculatedSum =
+                          double.parse(value) /
+                              double.parse(widget.currency.rate ?? '');
+                    } else {
+                      _calculatedSum =
+                          double.parse(value) *
+                              double.parse(widget.currency.rate ?? '');
+                    }
                   }
                 });
               },
