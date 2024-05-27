@@ -1,9 +1,9 @@
-import 'package:currency_converter/app_helpers.dart';
-import 'package:currency_converter/converter_page.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 
 import 'currency.dart';
+import 'app_helpers.dart';
+import 'converter_page.dart';
 
 class CurrencyItem extends StatelessWidget {
   final Currency currency;

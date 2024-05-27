@@ -1,13 +1,12 @@
-import 'package:currency_converter/currency_item.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_remix/flutter_remix.dart';
+import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_remix/flutter_remix.dart';
 
 import 'currency.dart';
 import 'app_helpers.dart';
-import 'currency_history_item.dart';
 import 'http_service.dart';
+import 'currency_history_item.dart';
 
 class ConverterPage extends StatefulWidget {
   final Currency currency;
@@ -75,105 +74,108 @@ class _ConverterPageState extends State<ConverterPage> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            const SizedBox(height: 24),
-            TextFormField(
-              controller: _textEditingController,
-              textAlign: TextAlign.end,
-              keyboardType: TextInputType.number,
-              cursorColor: Colors.black,
-              cursorWidth: 1,
-              onChanged: (value) {
-                setState(() {
-                  if (value.isEmpty) {
-                    _calculatedSum = 0;
-                  } else {
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              const SizedBox(height: 24),
+              TextFormField(
+                controller: _textEditingController,
+                textAlign: TextAlign.end,
+                keyboardType: TextInputType.number,
+                cursorColor: Colors.black,
+                cursorWidth: 1,
+                onChanged: (value) {
+                  setState(() {
+                    if (value.isEmpty) {
+                      _calculatedSum = 0;
+                    } else {
+                      if (_isUzsMain) {
+                        _calculatedSum =
+                            double.parse(value) /
+                                double.parse(widget.currency.rate ?? '');
+                      } else {
+                        _calculatedSum =
+                            double.parse(value) *
+                                double.parse(widget.currency.rate ?? '');
+                      }
+                    }
+                  });
+                },
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: Colors.black, width: 2),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: Colors.black, width: 2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              _isUzsMain
+                  ? const Text('O\'zbekiston so\'mi')
+                  : Text(
+                      AppHelpers.getCurrencyTitleByLocale(
+                          widget.currency, widget.locale),
+                    ),
+              const SizedBox(height: 20),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    _isUzsMain = !_isUzsMain;
                     if (_isUzsMain) {
                       _calculatedSum =
-                          double.parse(value) /
+                          double.parse(_textEditingController?.text ?? '') /
                               double.parse(widget.currency.rate ?? '');
                     } else {
                       _calculatedSum =
-                          double.parse(value) *
+                          double.parse(_textEditingController?.text ?? '') *
                               double.parse(widget.currency.rate ?? '');
                     }
-                  }
-                });
-              },
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
+                  });
+                },
+                icon: const Icon(FlutterRemix.repeat_fill),
+              ),
+              const SizedBox(height: 20),
+              Container(
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.black, width: 2),
+                  border: Border.all(color: Colors.black, width: 2),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: Colors.black, width: 2),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                alignment: Alignment.centerRight,
+                child: Text(
+                  NumberFormat.currency(
+                    symbol: '${_isUzsMain ? '${widget.currency.ccy}' : 'UZS'} ',
+                  ).format(_calculatedSum),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            _isUzsMain
-                ? const Text('O\'zbekiston so\'mi')
-                : Text(
-                    AppHelpers.getCurrencyTitleByLocale(
-                        widget.currency, widget.locale),
-                  ),
-            const SizedBox(height: 20),
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  _isUzsMain = !_isUzsMain;
-                  if (_isUzsMain) {
-                    _calculatedSum =
-                        double.parse(_textEditingController?.text ?? '') /
-                            double.parse(widget.currency.rate ?? '');
-                  } else {
-                    _calculatedSum =
-                        double.parse(_textEditingController?.text ?? '') *
-                            double.parse(widget.currency.rate ?? '');
-                  }
-                });
-              },
-              icon: const Icon(FlutterRemix.repeat_fill),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.black, width: 2),
+              const SizedBox(height: 20),
+              _isUzsMain
+                  ? Text(
+                      AppHelpers.getCurrencyTitleByLocale(
+                          widget.currency, widget.locale),
+                    )
+                  : const Text('O\'zbekiston so\'mi'),
+              const SizedBox(height: 40),
+              ListView.builder(
+                itemCount: _currencyHistories.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return CurrencyHistoryItem(
+                    currency: _currencyHistories[index],
+                    locale: widget.locale,
+                  );
+                },
               ),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              alignment: Alignment.centerRight,
-              child: Text(
-                NumberFormat.currency(
-                  symbol: '${_isUzsMain ? '${widget.currency.ccy}' : 'UZS'} ',
-                ).format(_calculatedSum),
-              ),
-            ),
-            const SizedBox(height: 20),
-            _isUzsMain
-                ? Text(
-                    AppHelpers.getCurrencyTitleByLocale(
-                        widget.currency, widget.locale),
-                  )
-                : const Text('O\'zbekiston so\'mi'),
-            const SizedBox(height: 40),
-            ListView.builder(
-              itemCount: _currencyHistories.length,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return CurrencyHistoryItem(
-                  currency: _currencyHistories[index],
-                  locale: widget.locale,
-                );
-              },
-            ),
-            const SizedBox(height: 40),
-          ],
+              const SizedBox(height: 40),
+            ],
+          ),
         ),
       ),
     );

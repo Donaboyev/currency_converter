@@ -2,7 +2,6 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
 import 'currency.dart';
-import 'app_helpers.dart';
 
 class CurrencyHistoryItem extends StatelessWidget {
   final Currency currency;

@@ -1,15 +1,13 @@
-import 'package:provider/provider.dart';
-
+import 'currency.dart';
+import 'main_drawer.dart';
 import 'app_helpers.dart';
+import 'http_service.dart';
 import 'app_provider.dart';
 import 'currency_item.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
-import 'currency.dart';
-import 'main_drawer.dart';
-import 'http_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
@@ -41,7 +39,6 @@ class _HomePageState extends State<HomePage> {
     final client = GetIt.I.get<HttpService>().client();
     final response = await client.get(
         '/uz/arkhiv-kursov-valyut/json/all/${AppHelpers.getFormattedDate(_selectedDate)}/');
-    debugPrint('===> $response');
     setState(() {
       _isLoading = false;
       _currencies = CurrencyResponse.fromJson(response.data).data ?? [];
@@ -52,7 +49,6 @@ class _HomePageState extends State<HomePage> {
     final client = GetIt.I.get<HttpService>().client();
     final response = await client.get(
         '/uz/arkhiv-kursov-valyut/json/all/${AppHelpers.getFormattedDate(_selectedDate)}/');
-    debugPrint('===> $response');
     setState(() {
       _currencies = CurrencyResponse.fromJson(response.data).data ?? [];
     });
